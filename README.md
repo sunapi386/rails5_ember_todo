@@ -159,3 +159,20 @@ file, which should like this:
           methods: [:get, :post, :put, :patch, :delete, :options, :head]
       end
     end
+
+Putting it all together
+-----------------------
+
+Now the whole application can be launched.
+
+In one terminal, run the rails backend:
+
+    cd rails5_todo_api
+    rails s
+
+and a ruby web server to host the ember frontend:
+
+    cd ember_todo_list
+    ruby -run -e httpd . -p 9000
+
+Now browse to [http://localhost:9000].
