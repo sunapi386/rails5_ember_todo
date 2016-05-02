@@ -82,9 +82,7 @@ Using the default json adapter, a Todo item would be serialized like:
     {
       "id": 1,
       "title": "Todo 1",
-      "isCompleted": false,
-      "created_at": "2016-04-29T22:04:17.133Z",
-      "updated_at": "2016-04-29T22:04:17.133Z"
+      "isCompleted": false
     }
 
 But we need to pick a JSON format matching our Ember application, selecting a format that works well with the Ember’s
@@ -93,21 +91,20 @@ the JSON payload, as it is explained in the Ember RESTAdapter documentation.
 
 It means we want to serialize a Todo item like this:
 
-    {
-      "id": 3,
+  {
+    "todo": {
+      "id": 8,
       "title": "Todo 1",
-      "isCompleted": false,
-      "created_at": "2016-04-29T22:29:23.352Z",
-      "updated_at": "2016-04-29T22:29:23.352Z"
+      "isCompleted": false
     }
+  }
 
-This is easy to do with Active Model Serializer.
+This can be done with Active Model Serializer.
 
-1.  Add `gem 'active_model_serializers'` to the Gemfile.
-2.  Add `include ActionController::Serialization` to `app/controllers/application_controller.rb`
-
+1.  Add `gem 'active_model_serializers', '~> 0.10.0.rc1'` to the Gemfile.
+2.  In `./config/initializers/ams.rb`, add `ActiveModel::Serializer.config.adapter = :json`.
+3.  Add `include ActionController::Serialization` to `app/controllers/application_controller.rb` like this:
 
     class ApplicationController < ActionController::API
     +    include ActionController::Serialization
-
 
