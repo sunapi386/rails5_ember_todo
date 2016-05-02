@@ -75,7 +75,8 @@ Start the web server.
 
 And create a Todo using curl
 
-    curl -H "Content-Type:application/json; charset=utf-8" -d '{"todo": {"title":"Todo 1","isCompleted":false}}' http://localhost:3000/todos
+    curl -H "Content-Type:application/json; charset=utf-8" -d '{"todo": {"title":"Todo 1","isCompleted":false}}'
+    http://localhost:3000/todos
 
 Using the default json adapter, a Todo item would be serialized like:
 
@@ -91,13 +92,13 @@ the JSON payload, as it is explained in the Ember RESTAdapter documentation.
 
 It means we want to serialize a Todo item like this:
 
-  {
-    "todo": {
-      "id": 8,
-      "title": "Todo 1",
-      "isCompleted": false
+    {
+      "todo": {
+        "id": 8,
+        "title": "Todo 1",
+        "isCompleted": false
+      }
     }
-  }
 
 This can be done with Active Model Serializer.
 
@@ -108,3 +109,50 @@ This can be done with Active Model Serializer.
     class ApplicationController < ActionController::API
     +    include ActionController::Serialization
 
+Now our rails API server is ready to handle work.
+
+
+Frontend
+-------------
+
+Now the frontend implemention with Ember. Using the Ember Todo-list, some modification is required to work with rails
+backend.
+
+Change browser local storage to persist in Rails API, by configure Ember adapter from `LSAdapter` (local storage)
+to `RESTAdapter`.
+
+In `js/application.js`, change
+
+    Todos.ApplicationAdapter = DS.LSAdapter.extend({
+        namespace: 'todos-emberjs'
+    });
+
+to use `RESTAdapter` and give it a `host`.
+
+    Todos.ApplicationAdapter = DS.RESTAdapter.extend({
+        host: 'http://localhost:3000'
+    });
+
+Finally, we have to configure CORS in the Rails API only backend because both applications will run in different domains (we will test the backend in localhost:3000 and the client-side application in localhost:9000).
+
+Rack Middleware for handling Cross-Origin Resource Sharing (CORS), which makes cross-origin AJAX possible.
+
+Uncomment the rack-cors gem reference in the Gemfile, run bundle install, and uncomment the config/initializers/cors.rb
+file, which should like this:
+
+    # Be sure to restart your server when you modify this file.
+
+    # Avoid CORS issues when API is called from the frontend app.
+    # Handle Cross-Origin Resource Sharing (CORS) in order to accept cross-origin AJAX requests.
+
+    # Read more: https://github.com/cyu/rack-cors
+
+    Rails.application.config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'localhost:9000'
+
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      end
+    end
