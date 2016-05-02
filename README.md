@@ -1,6 +1,9 @@
 Rails 5 API app & Ember
 =======================
 
+In this folder are two submodules: the Ruby API component, and the ember frontend component. They are submodules
+so you can look at them to see how they were build individually (commit history).
+
 I'm learning rails 5 and ember, so I'm putting together this guide as a form to track what I'm learning and keep
 progress. Some of my information sources are:
 
