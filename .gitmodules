@@ -1,6 +1,6 @@
 [submodule "rails5_todo_api"]
 	path = rails5_todo_api
-	url = git@gitlab.sd.apple.com:j_sun/rails5_todo_api.git
+	url = git@github.com:sunapi386/rails5_todo_api.git
 [submodule "ember_todo_list"]
 	path = ember_todo_list
-	url = git@gitlab.sd.apple.com:j_sun/ember_todo_list.git
+	url = git@github.com:sunapi386/ember_todo_list.git
